@@ -6,16 +6,6 @@ const express = require("express"),
 
 // handle user sign up and initial log in
 router.post("/register", (req, res) => {
-  let newUser = new User({
-    username: req.body.username,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    avatar: req.body.avatar,
-    email: req.body.email
-  });
-  if (req.body.adminCode === "secretCode123") {
-    newUser.isAdmin = true;
-  }
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
       req.flash("error", err);

@@ -1,5 +1,6 @@
 const express = require("express"),
   router = express.Router(),
+  passport = require("passport"),
   mongoose = require("mongoose"),
   User = mongoose.model("User");
 
@@ -9,19 +10,22 @@ router.post("/new", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // create user and send response
-    User.init();
-    const userCreated = await User.init().then(() =>
-      User.create({ email, password })
+    const userCreated = await User.register(
+      {
+        email,
+        username: email,
+        password
+      },
+      password
     );
-    res.send(userCreated);
+    res.status(200).send(userCreated);
   } catch (err) {
     const responseBody = {
       status: 0,
       message: "There was an error creating a user given your information.",
       err: err
     };
-    res.send(responseBody);
+    res.status(400).send(responseBody);
   }
 });
 
