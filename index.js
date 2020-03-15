@@ -1,12 +1,18 @@
 // import libs/other
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-
+const express = require("express"),
+  bodyParser = require("body-parser"),
+  mongoose = require("mongoose"),
+  passport = require("passport"),
+  LocalStrategy = require("passport-local"),
+  User = require("./models/User");
 
 // import config files
 const { dbPath, dbOpts } = require("./config/db");
 const secrets = require("./config/secrets");
+
+// import routes
+const authRoutes = require("./routes/user/auth/auth");
+const userRoutes = require("./routes/user/user");
 
 // connect to db
 mongoose.connect(dbPath, dbOpts);
@@ -17,22 +23,40 @@ const server = express();
 
 // configure cors and json
 server.use(express.json());
-server.use(bodyParser.urlencoded({extended: true}));
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Content-Type", "application/json");
   next();
 });
 
-
+// passport config
+server.use(
+  require("express-session")({
+    secret: "PASSPORT SECRET BLAH BLAH BLAH",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+server.use(passport.initialize());
+server.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // determine port and start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, console.log(`SERVER STARTED ON PORT: ${PORT}`));
 
-// * ROUTES * 
+// * ROUTES *
+// auth routes
+server.use("/auth", authRoutes);
+server.use("/user", userRoutes);
 
 // index route
 server.get("/", (req, res) => res.send({ msg: "INDEX" }));
