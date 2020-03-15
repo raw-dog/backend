@@ -2,8 +2,6 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  passport = require("passport"),
-  LocalStrategy = require("passport-local"),
   User = require("./models/User");
 
 // import config files
@@ -34,20 +32,6 @@ server.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   next();
 });
-
-// passport config
-server.use(
-  require("express-session")({
-    secret: "PASSPORT SECRET BLAH BLAH BLAH",
-    resave: false,
-    saveUninitialized: false
-  })
-);
-server.use(passport.initialize());
-server.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 // determine port and start server
 const PORT = process.env.PORT || 5000;
