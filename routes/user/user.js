@@ -2,10 +2,11 @@
 const express = require("express"),
   mongoose = require("mongoose");
 
-// import user model and auth helpers
+// import user model, auth helpers, middleware
 const User = mongoose.model("User");
-const { saltAndHashPw } = require("../../helpers/auth");
+const { saltAndHashPw, generateToken } = require("../../helpers/auth");
 
+const { authorizeClient } = require("../../middleware/auth");
 // set up router
 const router = express.Router();
 
@@ -22,10 +23,10 @@ router.post("/new", async (req, res) => {
     // create a user in db
     const userCreated = await User.create({ email, hash });
 
-    // TODO: generate access and refresh tokens and return them in response
-
-    // send response
-    res.status(200).send(userCreated);
+    // generate tokens and send response
+    const refreshToken = generateToken(email, "refresh");
+    const accessToken = generateToken(email, "access");
+    res.status(200).send({ status: 1, refreshToken, accessToken });
   } catch (err) {
     const responseBody = {
       status: 0,
@@ -36,14 +37,11 @@ router.post("/new", async (req, res) => {
   }
 });
 
-// TODO: user dashboard
-router.get("/:id", (req, res) => {
-  User.findById(req.params.id, (err, foundUser) => {
-    if (err) {
-      req.flash("error", "Something went wrong...");
-      return res.redirect("back");
-    }
-  });
+// user dashboard
+router.post("/", authorizeClient, async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  res.status(200).send({ status: 1, user });
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@ const express = require("express"),
   mongoose = require("mongoose");
 
 // import user model and auth helpers
-const { checkPassword, generateToken } = require("../../../helpers/auth"),
+const { checkPw, generateToken } = require("../../../helpers/auth"),
   User = mongoose.model("User");
 
 // init router
@@ -21,7 +21,7 @@ router.post("/login", async (req, res) => {
     if (user !== null) {
       // check passwords
       const { hash } = user;
-      const passwordsMatch = checkPassword(password, hash);
+      const passwordsMatch = checkPw(password, hash);
 
       // if passwords match, grant access and refresh tokens
       if (passwordsMatch) {

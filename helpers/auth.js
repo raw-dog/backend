@@ -10,8 +10,7 @@ module.exports = {
     const salt = bcryptjs.genSaltSync(8);
     return bcryptjs.hashSync(pw, salt);
   },
-  checkPassword: (givenPw, storedHash) =>
-    bcryptjs.compareSync(givenPw, storedHash),
+  checkPw: (givenPw, storedHash) => bcryptjs.compareSync(givenPw, storedHash),
   generateToken: (email, type) => {
     let expiration;
     switch (type) {
@@ -29,5 +28,13 @@ module.exports = {
     }
     let token = jwt.sign({ data: email }, jwtSecret, { expiresIn: expiration });
     return token;
+  },
+  decodeToken: token => {
+    try {
+      const decoded = jwt.verify(token, jwtSecret);
+      return decoded.data;
+    } catch (err) {
+      return false;
+    }
   }
 };
