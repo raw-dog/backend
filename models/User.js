@@ -16,6 +16,7 @@ const User = new Schema({
     zip: Number
   },
   isAdmin: { type: Boolean, default: false },
+  stripeCustomerId: String,
   createdAt: { type: Date, default: Date.now }
 });
 

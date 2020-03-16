@@ -4,13 +4,13 @@ const express = require("express"),
 
 // import user model and auth helpers
 const { checkPw, generateToken } = require("../../../helpers/auth"),
-  User = mongoose.model("User");
+  User = require("../../../models/User");
 
 // init router
 const router = express.Router();
 
 // user login
-router.post("/login", async (req, res) => {
+router.post("/signin", async (req, res) => {
   // pull props off of request
   const { email, password } = req.body;
 

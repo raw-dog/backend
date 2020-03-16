@@ -1,8 +1,11 @@
 // import auth helpers
 const { decodeToken, generateToken } = require("../helpers/auth");
 
+// import model
+const User = require("../models/User");
+
 module.exports = {
-  authorizeClient: (req, res, next) => {
+  authorizeUser: (req, res, next) => {
     // pull props off request
     const { email, accessToken, refreshToken } = req.body;
 
@@ -31,6 +34,34 @@ module.exports = {
         status: 0,
         message: "Request unauthorized. Please log in again."
       });
+    }
+  },
+  determineIfAdmin: async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+      // find user
+      const user = await User.findOne({ email });
+
+      // if user is admin call next
+      if (user !== null && user.isAdmin) next();
+      else {
+        const responseBody = {
+          status: 0,
+          message:
+            "There was an error with your credentials. Please try again using different credentials.",
+          err: "Unauthorized Admin"
+        };
+        res.status(401).send(responseBody);
+      }
+    } catch (err) {
+      const responseBody = {
+        status: 0,
+        message:
+          "There was an error with your credentials. Please try again using different credentials.",
+        err
+      };
+      res.status(401).send(responseBody);
     }
   }
 };

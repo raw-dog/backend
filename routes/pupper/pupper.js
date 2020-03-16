@@ -1,10 +1,5 @@
 // import libs/other
-const express = require("express"),
-  mongoose = require("mongoose");
-
-// import user model and auth helpers
-const User = mongoose.model("User");
-const { saltAndHashPw, generateToken } = require("../../helpers/auth");
+const express = require("express");
 
 // set up router
 const router = express.Router();

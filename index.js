@@ -1,19 +1,19 @@
 // import libs/other
 const express = require("express"),
   bodyParser = require("body-parser"),
-  mongoose = require("mongoose"),
-  User = require("./models/User");
+  mongoose = require("mongoose");
 
 // import config files
 const { dbPath, dbOpts } = require("./config/db");
 const secrets = require("./config/secrets");
 
+// connect to db
+mongoose.connect(dbPath, dbOpts);
+
 // import routes
 const authRoutes = require("./routes/user/auth/auth");
 const userRoutes = require("./routes/user/user");
-
-// connect to db
-mongoose.connect(dbPath, dbOpts);
+const mealRoutes = require("./routes/meal/meal");
 
 // create express server
 console.log("environment:", secrets.environment);
@@ -41,6 +41,7 @@ server.listen(PORT, console.log(`SERVER STARTED ON PORT: ${PORT}`));
 // auth routes
 server.use("/auth", authRoutes);
 server.use("/user", userRoutes);
+server.use("/meals", mealRoutes);
 
 // index route
 server.get("/", (req, res) => res.send({ msg: "INDEX" }));

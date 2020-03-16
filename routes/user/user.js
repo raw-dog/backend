@@ -3,10 +3,10 @@ const express = require("express"),
   mongoose = require("mongoose");
 
 // import user model, auth helpers, middleware
-const User = mongoose.model("User");
+const User = require("../../models/User");
 const { saltAndHashPw, generateToken } = require("../../helpers/auth");
 
-const { authorizeClient } = require("../../middleware/auth");
+const { authorizeUser } = require("../../middleware/auth");
 // set up router
 const router = express.Router();
 
@@ -38,7 +38,7 @@ router.post("/new", async (req, res) => {
 });
 
 // user dashboard
-router.post("/", authorizeClient, async (req, res) => {
+router.post("/", authorizeUser, async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   res.status(200).send({ status: 1, user });
