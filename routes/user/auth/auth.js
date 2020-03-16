@@ -9,7 +9,7 @@ const { checkPw, generateToken } = require("../../../helpers/auth"),
 // init router
 const router = express.Router();
 
-// TODO: user login
+// user login
 router.post("/login", async (req, res) => {
   // pull props off of request
   const { email, password } = req.body;
@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// TODO: user logout
+// TODO: user 'logout'
 
 // TODO: user forgot password
 

@@ -7,10 +7,9 @@ module.exports = {
     const { email, accessToken, refreshToken } = req.body;
 
     // if there is a valid access token that matches the given email grant request as usual
-
     if (accessToken) {
       let decodedAccessEmail = decodeToken(accessToken);
-      if (decodedAccessEmail && (decodedAccessEmail === email)) next();
+      if (decodedAccessEmail && decodedAccessEmail === email) next();
       else if (refreshToken) {
         let decodedRefreshEmail = decodeToken(refreshToken);
         if (decodedRefreshEmail === email) {
