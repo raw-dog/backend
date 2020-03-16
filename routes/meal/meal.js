@@ -1,6 +1,5 @@
 // import libs/other
 const express = require("express"),
-  mongoose = require("mongoose"),
   {
     stripe,
     stripeStatementDescriptor
@@ -34,7 +33,7 @@ router.post("/new", authorizeUser, determineIfAdmin, async (req, res) => {
     });
 
     // return a success message
-    if (savedMeal) res.status(200).send({ status: 1, savedMeal });
+    if (savedMeal) res.status(200).send({ success: 1, savedMeal });
   } catch (err) {
     const responseBody = {
       status: 0,

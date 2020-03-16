@@ -17,7 +17,7 @@ module.exports = {
         let decodedRefreshEmail = decodeToken(refreshToken);
         if (decodedRefreshEmail === email) {
           let newAccessToken = generateToken(email, "access");
-          res.status(200).send({ status: 1, newAccessToken });
+          res.status(200).send({ success: 1, newAccessToken });
         } else {
           res.status(401).send({
             status: 0,

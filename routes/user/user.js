@@ -26,7 +26,7 @@ router.post("/new", async (req, res) => {
     // generate tokens and send response
     const refreshToken = generateToken(email, "refresh");
     const accessToken = generateToken(email, "access");
-    res.status(200).send({ status: 1, refreshToken, accessToken });
+    res.status(200).send({ success: 1, refreshToken, accessToken });
   } catch (err) {
     const responseBody = {
       status: 0,
@@ -41,7 +41,7 @@ router.post("/new", async (req, res) => {
 router.post("/", authorizeUser, async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-  res.status(200).send({ status: 1, user });
+  res.status(200).send({ success: 1, user });
 });
 
 module.exports = router;
