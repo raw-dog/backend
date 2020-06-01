@@ -79,4 +79,6 @@ router.post("/", authorizeUser, async (req, res) => {
     });
 });
 
+// TODO: user delete account
+
 module.exports = router;

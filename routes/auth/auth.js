@@ -3,11 +3,11 @@ const express = require("express"),
     mongoose = require("mongoose");
 
 // import user model and auth helpers
-const {
-    checkPw,
-    generateToken
-} = require("../../helpers/auth"),
-    User = require("../../models/User");
+const User = require("../../models/User"),
+    {
+        checkPw,
+        generateToken
+    } = require("../../helpers/auth");
 
 // init router
 const router = express.Router();

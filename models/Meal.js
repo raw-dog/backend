@@ -27,7 +27,7 @@ let Meal = new Schema({
     },
     ingredients: [{
         name: String,
-        amountPerLbOfFood: String,
+        ozPerLbOfFood: Number,
         pricePerLbOfFood: Number
     }],
     description: String,

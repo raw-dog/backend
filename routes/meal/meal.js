@@ -20,7 +20,8 @@ router.post("/new", authorizeUser, determineIfAdmin, async (req, res) => {
     const {
         name,
         description,
-        basePricePerLb
+        basePricePerLb,
+        ingredients
     } = req.body;
 
     try {
@@ -36,7 +37,8 @@ router.post("/new", authorizeUser, determineIfAdmin, async (req, res) => {
             name,
             description,
             stripeProductId: mealProduct.id,
-            basePricePerLb
+            basePricePerLb,
+            ingredients
         });
 
         // return a success message
