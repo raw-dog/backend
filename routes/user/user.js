@@ -29,8 +29,6 @@ router.post("/new", async (req, res) => {
         // salt and hash pw
         const hash = saltAndHashPw(password);
 
-        console.log(hash);
-
         // create a user in db
         if (isAdmin) {
             var userCreated = await User.create({
@@ -44,8 +42,6 @@ router.post("/new", async (req, res) => {
                 hash
             });
         }
-
-        console.log(userCreated);
 
         // generate tokens and send response
         const refreshToken = generateToken(email, "refresh");

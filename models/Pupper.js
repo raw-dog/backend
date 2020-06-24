@@ -5,25 +5,20 @@ let Pupper = new Schema({
     name: String,
     healthInfo: {
         age: Number,
-        weights: [{
-            weight: Number,
-            date: Date
-        }]
+        weight: Number
     },
+    dailyFoodInOz: Number,
     assignedMeals: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Meal"
-        },
-        name: String
+        }
     }],
     parent: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
-        },
-        email: String,
-        firstName: String
+        }
     },
     createdAt: {
         type: Date,

@@ -17,9 +17,9 @@ mongoose.connect(dbPath, dbOpts);
 const authRoutes = require("./routes/auth/auth");
 const userRoutes = require("./routes/user/user");
 const mealRoutes = require("./routes/meal/meal");
+const pupperRoutes = require("./routes/pupper/pupper");
 
 // create express server
-console.log("environment: ", secrets.environment);
 const server = express();
 
 // configure cors and json
@@ -40,13 +40,16 @@ server.use((req, res, next) => {
 
 // determine port and start server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, console.log(`SERVER STARTED ON PORT: ${PORT}`));
+server.listen(PORT, () => {
+    console.log(`ENVIRONMENT: ${secrets.environment}`);
+    console.log(`SERVER STARTED ON PORT: ${PORT}`);
+});
 
 // * ROUTES *
-// auth routes
 server.use("/auth", authRoutes);
 server.use("/user", userRoutes);
 server.use("/meals", mealRoutes);
+server.use("/puppers", pupperRoutes);
 
 // index route
 server.get("/", (req, res) => res.send({

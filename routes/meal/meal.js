@@ -15,7 +15,7 @@ const Meal = require("../../models/Meal"),
 // set up router
 const router = express.Router();
 
-// create a meal in our db and in stripe
+// create a meal
 router.post("/new", authorizeUser, determineIfAdmin, async (req, res) => {
     const {
         name,
@@ -49,19 +49,19 @@ router.post("/new", authorizeUser, determineIfAdmin, async (req, res) => {
     } catch (err) {
         const responseBody = {
             status: 0,
-            message: "There was an error creating this product",
+            message: "There was an error creating this product.",
             err
         };
         res.status(500).send(responseBody);
     }
 });
 
-// edit a meal
+// TODO: edit a meal
 
-// delete a meal
+// TODO: delete a meal
 
-// read a meal
+// TODO: read a meal
 
-// read all meals
+// TODO: read all meals
 
 module.exports = router;
